@@ -8,3 +8,13 @@ server.listen(3000);
 app.get('/', function(req, res) {
 	res.sendFile(__dirname + '/index.html');
 });
+
+io.sockets.on('connection', function(socket) {
+	socket.on('send message', function(data) {
+		io.sockets.emit('new message', data);
+	});
+});
+
+
+
+// https://www.youtube.com/watch?v=pNKNYLv2BpQ

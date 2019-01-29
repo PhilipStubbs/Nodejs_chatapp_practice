@@ -43,18 +43,32 @@
 			var socket = io.connect();
 			var $nickForm = $('#setNick');
 			var $nickError = $('#nickError');
-			var $nickbox = $('#nickname');
+			var $nickBox = $('#nickname');
+			var	$users = $("#users");
 			var	$messageForm = $("#send-message");
 			var $messageBox = $("#message");
 			var $chat = $('#chat');
 
 			$nickForm.submit(function(e){
 				e.preventDefault();
-				socket.emit('new user', $nickBox.val() , function(data){
-					
+				socket.emit('new user', $nickBox.val(), function(data){
+					if (data)
+					{
+						$('#nickWrap').hide();
+						$('#contentWrap').show();
+					}
+					else
+					{
+						$nickError.html("That username Already Taken");
+					}
 				});
-				$nickbox('');
+				$nickBox.val('');
 			});
+
+			socket.on('usernames', function(data){
+				$users.html(data.join("<br/>") ); 
+			});
+
 
 			$messageForm.submit(function(e) {
 				e.preventDefault();

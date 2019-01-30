@@ -13,6 +13,13 @@
 			float: left;
 			border: 1px #000000 solid;
 		}
+		.error{
+			color: red;
+		}
+		.whisper{
+			color: gray;
+			font-style: italic;
+		}
 	</style>	
 
 </head>
@@ -25,8 +32,8 @@
 			<input type="submit" ></input>
 		</form>
 	</div>
-
 	<div id="contentWrap">
+		
 		<div id="chatWrap">
 			<div id="chat"></div>
 			<form id="send-message">
@@ -79,7 +86,7 @@
 			$messageForm.submit(function(e) {
 				e.preventDefault();
 				socket.emit('send message', $messageBox.val(), function(data){
-					// add stuff later
+					$chat.append( "<span class='error'><b>" + data + "</span><br/>")
 					console.log(data);
 				});
 				$messageBox.val('');
@@ -87,7 +94,11 @@
 
 			socket.on('new message', function(data)
 			{
-				$chat.append( "<b>" + data.nick + " </b>: " + data.msg + "<br/>")
+				$chat.append( "<span class='msg'><b>" + data.nick + " </b>: " + data.msg + "</span><br/>")
+			});
+
+			socket.on('whisper', function(data) {
+				$chat.append( "<span class='whisper'><b>" + data.nick + " </b>: " + data.msg + "</span><br/>")
 			});
 		});
 	

@@ -33,6 +33,7 @@ io.sockets.on('connection', function(socket) {
 
 	socket.on('send message', function(data, callback) {
 		var msg = data.trim();
+		console.log(socket.nickname);
 		if (msg.substr(0,3) === '/w ' || msg.substr(0,3) === "\\w ")
 		{
 			msg = msg.substr(3);
@@ -43,6 +44,7 @@ io.sockets.on('connection', function(socket) {
 				if(name in users){
 					console.log("Whisper");
 					users[name].emit('whisper', {msg : msg, nick : socket.nickname});
+					users[socket.nickname].emit('whisper', {msg : msg, nick : socket.nickname});
 				}
 				else
 				{

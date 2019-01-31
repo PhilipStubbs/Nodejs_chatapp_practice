@@ -1,6 +1,7 @@
 <html>
 
 <head>
+	
 	<title>Chat with socket.io and node.js</title>
 	<style>
 		#chat{
@@ -24,6 +25,8 @@
 
 </head>
 <body>
+		<script src="/socket.io/socket.io.js"></script>
+		<script type="text/javascript" src="./chat.js"></script>
 	<div id='nickWrap'>
 		<p>Enter Username</p>
 		<p id="nickError"></p>
@@ -43,9 +46,9 @@
 		</div>
 		<div id="users"></div>
 	</div>
-	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
-	<script src="/socket.io/socket.io.js"></script>
-	<script>
+	<!-- <script src="http://code.jquery.com/jquery-latest.min.js"></script> -->
+
+	<!-- <script>
 		jQuery(function($){
 			var socket = io.connect();
 			var $nickForm = $('#setNick');
@@ -102,7 +105,7 @@
 			});
 		});
 	
-	</script>
+	</script> -->
 </body>
 
 </html>

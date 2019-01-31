@@ -18,7 +18,6 @@ io.sockets.on('connection', function(socket) {
 		}
 		else
 		{
-			
 			callback(true);
 			socket.nickname = data;
 			users[socket.nickname] = socket;

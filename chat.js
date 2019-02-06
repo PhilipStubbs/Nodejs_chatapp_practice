@@ -1,21 +1,48 @@
 // <!-- <script>
 
 
-var socket = io.connect("http://localhost:3000");
-	nickForm = document.getElementById("setNick");
-	nickError = document.getElementById("nickError");
-	nickBox = document.getElementById("nickname");
-	users = document.getElementById("users");
-	messageForm = document.getElementById("send-message");
-	messageBox = document.getElementById("message");
-	chat = document.getElementById("chat");
-
-	nickForm.addEventListerner("submit", function(e){
-		e.preventDefualt();
-	});
-
-
-
+var socket = io.connect();
+		nickForm = document.getElementById("setNick");
+		nickError = document.getElementById("nickError");
+		nickBox = document.getElementById("nickname");
+		users = document.getElementById("users");
+		messageForm = document.getElementById("send-message");
+		messageBox = document.getElementById("message");
+		chat = document.getElementById("chat");
+		nickForm.addEventListener("submit", function(event){
+			event.preventDefault();
+			socket.emit('new user', nickBox.value, function(data){
+				if (data)
+				{
+					document.getElementById("nickWrap").style.display = "none";
+					document.getElementById("contentWrap").style.display = "block";
+				}
+				else
+				{
+					nickError.innerHTML = "That username Already Taken";
+				}
+			});
+			nickBox.value ='';
+			socket.on('usernames', function(data){
+				users.innerHTML = data.join("<br/>") ; 
+			});
+			messageForm.addEventListener("submit", function(e) {
+				e.preventDefault();
+				socket.emit('send message', messageBox.value, function(data){
+					chat.innerHTML += "<span class='error'><b>" + data + "</span><br/>";
+				});
+				messageBox.value = '';
+			});
+			socket.on('new message', function(data)
+			{
+				chat.innerHTML += "<span class='msg'><b>" + data.nick + " </b>: " + data.msg + "</span><br/>";
+			});
+			socket.on('whisper', function(data) {
+				chat.innerHTML +=  "<span class='whisper'><b>" + data.nick + " </b>: " + data.msg + "</span><br/>";
+			});
+			
+		});
+	
 
 // 	$nickForm.submit(function(e){
 // 		e.preventDefault();
